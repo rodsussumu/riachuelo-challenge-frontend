@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+:root {
+  // Tema claro
+  @include mat.theme(
+    (
+      color-scheme: light,
+      primary: #1976d2,
+      secondary: #9e9e9e,
+      tertiary: #009688,
+      density: 0,
+    )
+  );
+}
+
+.dark-theme {
+  // Tema escuro
+  @include mat.theme(
+    (
+      color-scheme: dark,
+      primary: #90caf9,
+      secondary: #bdbdbd,
+      tertiary: #80cbc4,
+      density: 0,
+    )
+  );
+}
+
+body {
+  margin: 0;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}

@@ -1,10 +1,8 @@
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
-import { Register } from './pages/register/register';
 import { Tasks } from './pages/tasks/tasks';
+import { Auth } from './pages/auth/auth';
 
 export const routes: Routes = [
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
+  { path: 'auth', component: Auth },
   { path: 'tasks', component: Tasks },
 ];
