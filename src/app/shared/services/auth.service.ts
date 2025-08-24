@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UserLoginResponse, UserRegisterResponse, UserRequest } from '../interfaces/user.interface';
 
@@ -18,5 +18,12 @@ export class AuthService {
 
   register(userRequest: UserRequest): Observable<UserRegisterResponse> {
     return this.http.post<UserRegisterResponse>(`${this.apiUrl}/register`, userRequest);
+  }
+
+  checkAuth() {
+    return this.http.get<UserLoginResponse>(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 }

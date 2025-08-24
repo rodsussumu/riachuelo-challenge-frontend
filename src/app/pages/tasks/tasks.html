@@ -1,0 +1,33 @@
+<div class="filters">
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+    <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
+      <mat-option value="ALL">Todos</mat-option>
+      <mat-option [value]="statusEnum.PENDING">Pendentes</mat-option>
+      <mat-option [value]="statusEnum.DONE">Concluídas</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Ordenar por vencimento</mat-label>
+    <mat-select [(ngModel)]="sortOrder" (selectionChange)="applyFilters()">
+      <mat-option value="ASC">Mais perto</mat-option>
+      <mat-option value="DESC">Mais longe</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="openTaskDialog()">Nova Tarefa</button>
+</div>
+
+<div class="tasks">
+  <mat-card *ngFor="let task of filteredTasks" (click)="openTaskDialog(task)">
+    <mat-card-title>{{ task.description }}</mat-card-title>
+    <mat-card-subtitle>Vencimento: {{ task.dueDate | date : 'dd/MM/yyyy' }}</mat-card-subtitle>
+
+    <mat-card-actions>
+      <button mat-button color="accent" (click)="toggleStatus(task); $event.stopPropagation()">
+        {{ task.status === 'PENDING' ? 'Marcar como Concluída' : 'Excluir' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
