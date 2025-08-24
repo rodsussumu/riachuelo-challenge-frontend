@@ -14,8 +14,13 @@
     <mat-form-field appearance="outline" class="full">
       <mat-label>Descrição</mat-label>
       <input matInput formControlName="description" autocomplete="off" maxlength="255" />
-      <mat-hint align="end">{{ f.description.value?.length || 0 }}/255</mat-hint>
-      <mat-error *ngIf="f.description.hasError('required')">Descrição é obrigatória</mat-error>
+      <mat-hint align="end">{{ f.description.value.length || 0 }}/255</mat-hint>
+      @if(f.description.hasError('required')) {
+      <mat-error>Descrição é obrigatória</mat-error>
+
+      } @if(f.description.hasError('minlength')) {
+      <mat-error>Mínimo de 3 caracteres</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full">
@@ -28,8 +33,13 @@
         startView="month"
       ></mat-datepicker>
       <mat-hint align="start">Formato: dd/MM/aaaa</mat-hint>
-      <mat-error *ngIf="f['dueDate'].hasError('required')">Informe a data de vencimento</mat-error>
-      <mat-error *ngIf="f['dueDate'].hasError('minDate')">Use hoje ou uma data futura</mat-error>
+      @if(f['dueDate'].hasError('required')) {
+      <mat-error>Informe a data de vencimento</mat-error>
+
+      } @if(f['dueDate'].hasError('minDate')) {
+      <mat-error>Use hoje ou uma data futura</mat-error>
+
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>

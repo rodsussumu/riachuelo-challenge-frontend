@@ -26,12 +26,8 @@
   </div>
 
   <div class="tasks">
-    <mat-card
-      *ngFor="let task of filteredTasks"
-      class="task-card"
-      [ngClass]="task.status"
-      (click)="openDetails(task)"
-    >
+    @for(task of filteredTasks; track task.id) {
+    <mat-card class="task-card" [ngClass]="task.status" (click)="openDetails(task)">
       <button
         mat-icon-button
         class="more"
@@ -111,5 +107,6 @@
       <mat-card-title>{{ task.description }}</mat-card-title>
       <mat-card-subtitle>Vencimento: {{ task.dueDate | date : 'dd/MM/yyyy' }}</mat-card-subtitle>
     </mat-card>
+    }
   </div>
 </div>
