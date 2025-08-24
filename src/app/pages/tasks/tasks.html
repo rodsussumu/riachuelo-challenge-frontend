@@ -1,33 +1,115 @@
-<div class="filters">
-  <mat-form-field appearance="outline">
-    <mat-label>Status</mat-label>
-    <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
-      <mat-option value="ALL">Todos</mat-option>
-      <mat-option [value]="statusEnum.PENDING">Pendentes</mat-option>
-      <mat-option [value]="statusEnum.DONE">Concluídas</mat-option>
-    </mat-select>
-  </mat-form-field>
+<div class="container">
+  <app-header></app-header>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Ordenar por vencimento</mat-label>
-    <mat-select [(ngModel)]="sortOrder" (selectionChange)="applyFilters()">
-      <mat-option value="ASC">Mais perto</mat-option>
-      <mat-option value="DESC">Mais longe</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
+        <mat-option value="ALL">Todos</mat-option>
+        <mat-option [value]="statusEnum.PENDING">Pendentes</mat-option>
+        <mat-option [value]="statusEnum.IN_PROGRESS">Em andamento</mat-option>
+        <mat-option [value]="statusEnum.DONE">Concluídas</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="openTaskDialog()">Nova Tarefa</button>
-</div>
+    <mat-form-field appearance="outline">
+      <mat-label>Ordenar por vencimento</mat-label>
+      <mat-select [(ngModel)]="sortOrder" (selectionChange)="applyFilters()">
+        <mat-option value="ASC">Mais perto</mat-option>
+        <mat-option value="DESC">Mais longe</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-<div class="tasks">
-  <mat-card *ngFor="let task of filteredTasks" (click)="openTaskDialog(task)">
-    <mat-card-title>{{ task.description }}</mat-card-title>
-    <mat-card-subtitle>Vencimento: {{ task.dueDate | date : 'dd/MM/yyyy' }}</mat-card-subtitle>
+    <button mat-raised-button color="primary" class="new-btn" (click)="openEdit()">
+      Nova Tarefa
+    </button>
+  </div>
 
-    <mat-card-actions>
-      <button mat-button color="accent" (click)="toggleStatus(task); $event.stopPropagation()">
-        {{ task.status === 'PENDING' ? 'Marcar como Concluída' : 'Excluir' }}
+  <div class="tasks">
+    <mat-card
+      *ngFor="let task of filteredTasks"
+      class="task-card"
+      [ngClass]="task.status"
+      (click)="openDetails(task)"
+    >
+      <button
+        mat-icon-button
+        class="more"
+        [matMenuTriggerFor]="menu"
+        (click)="$event.stopPropagation()"
+        aria-label="Mais ações"
+      >
+        <mat-icon>more_vert</mat-icon>
       </button>
-    </mat-card-actions>
-  </mat-card>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openEdit(task); $event.stopPropagation()">
+          <mat-icon>edit</mat-icon>
+          <span>Editar</span>
+        </button>
+
+        <ng-container [ngSwitch]="task.status">
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.PENDING"
+            (click)="setStatus(task, statusEnum.IN_PROGRESS); $event.stopPropagation()"
+          >
+            <mat-icon>play_circle</mat-icon>
+            <span>Marcar como Em andamento</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.PENDING"
+            (click)="setStatus(task, statusEnum.DONE); $event.stopPropagation()"
+          >
+            <mat-icon>task_alt</mat-icon>
+            <span>Marcar como Concluída</span>
+          </button>
+
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.IN_PROGRESS"
+            (click)="setStatus(task, statusEnum.DONE); $event.stopPropagation()"
+          >
+            <mat-icon>task_alt</mat-icon>
+            <span>Marcar como Concluída</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.IN_PROGRESS"
+            (click)="setStatus(task, statusEnum.PENDING); $event.stopPropagation()"
+          >
+            <mat-icon>undo</mat-icon>
+            <span>Voltar para Pendente</span>
+          </button>
+
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.DONE"
+            (click)="setStatus(task, statusEnum.IN_PROGRESS); $event.stopPropagation()"
+          >
+            <mat-icon>restart_alt</mat-icon>
+            <span>Voltar para Em andamento</span>
+          </button>
+          <button
+            mat-menu-item
+            *ngSwitchCase="statusEnum.DONE"
+            (click)="setStatus(task, statusEnum.PENDING); $event.stopPropagation()"
+          >
+            <mat-icon>undo</mat-icon>
+            <span>Voltar para Pendente</span>
+          </button>
+        </ng-container>
+
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="deleteTask(task); $event.stopPropagation()">
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Excluir</span>
+        </button>
+      </mat-menu>
+
+      <mat-card-title>{{ task.description }}</mat-card-title>
+      <mat-card-subtitle>Vencimento: {{ task.dueDate | date : 'dd/MM/yyyy' }}</mat-card-subtitle>
+    </mat-card>
+  </div>
 </div>

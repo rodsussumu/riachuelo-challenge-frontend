@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="dlg-title">
+  <div class="title-row">
+    <mat-icon>task_alt</mat-icon>
+    <span>Detalhes da Tarefa</span>
+    <span class="spacer"></span>
+    <button mat-icon-button mat-dialog-close aria-label="Fechar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</h2>
+
+<mat-dialog-content class="dlg-content">
+  <div class="row">
+    <div class="col">
+      <div class="label">Descrição</div>
+      <div class="value">{{ data.description }}</div>
+    </div>
+  </div>
+
+  <div class="row two">
+    <div class="col">
+      <div class="label">Criado em</div>
+      <div class="value">{{ data.createdAt | date : 'dd/MM/yyyy' }}</div>
+    </div>
+    <div class="col">
+      <div class="label">Vencimento</div>
+      <div class="value">{{ data.dueDate | date : 'dd/MM/yyyy' }}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="label">Status</div>
+    <span class="chip" [ngClass]="data.status">{{ statusLabel[data.status] }}</span>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dlg-actions">
+  <button mat-stroked-button color="primary" (click)="edit()">Editar</button>
+  <button mat-stroked-button color="warn" (click)="delete()">Excluir</button>
+  <button mat-flat-button (click)="close()">Fechar</button>
+</mat-dialog-actions>

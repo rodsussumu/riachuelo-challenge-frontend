@@ -1,7 +1,26 @@
-<mat-card class="login-card">
-  <mat-card-title>Login</mat-card-title>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="submit()">
+<div class="auth-shell">
+  <aside class="left">
+    <div class="left-content">
+      <h2>Olá</h2>
+      <p>Esse é um teste técnico feito para vaga de desenvolvedor fullstack senior na Riachuelo!</p>
+      <p>Para continuar conectado, entre com suas credenciais.</p>
+
+      <div class="divider"></div>
+
+      <p class="hint">
+        Novo por aqui?
+        <button mat-button color="primary" class="link" (click)="goToRegister()">
+          Crie uma conta
+        </button>
+      </p>
+    </div>
+  </aside>
+
+  <!-- Lado direito (form) -->
+  <section class="right">
+    <h1 class="title">Login</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Usuário</mat-label>
         <input matInput formControlName="username" placeholder="Digite seu usuário" />
@@ -12,10 +31,10 @@
         <input matInput type="password" formControlName="password" placeholder="Digite sua senha" />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="full-width" [disabled]="loading">
+      <button mat-raised-button color="primary" class="cta full-width" [disabled]="loading">
         <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
         <span *ngIf="!loading">Entrar</span>
       </button>
     </form>
-  </mat-card-content>
-</mat-card>
+  </section>
+</div>

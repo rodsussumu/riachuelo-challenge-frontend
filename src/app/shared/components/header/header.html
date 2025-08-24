@@ -1,0 +1,24 @@
+<mat-toolbar class="app-toolbar">
+  <div class="brand" (click)="goTasks()">
+    <mat-icon>check_circle</mat-icon>
+    <span class="logo-text">To do List</span>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="greet">
+    <span class="hello"
+      >Olá, <b>{{ username() || 'visitante' }}</b></span
+    >
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="avatar-btn" aria-label="Abrir menu">
+      <div class="avatar">{{ initials() || 'U' }}</div>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu" xPosition="before">
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Sair</span>
+  </button>
+</mat-menu>

@@ -1,0 +1,84 @@
+.dlg-title {
+  padding: 8px 16px 0;
+}
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.title-row .spacer {
+  flex: 1 1 auto;
+}
+
+.dlg-content {
+  padding: 0 16px 8px;
+  display: grid;
+  gap: 12px;
+  max-width: 100%;
+}
+
+.row {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.row.two {
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.col {
+  min-width: 0;
+}
+
+.label {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.value {
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 100%;
+  display: block;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  white-space: pre-wrap !important;
+}
+
+:host ::ng-deep .mdc-dialog__content {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+.chip.PENDING {
+  background: rgba(245, 158, 11, 0.18);
+  color: #7c3a03;
+}
+.chip.IN_PROGRESS {
+  background: rgba(59, 130, 246, 0.18);
+  color: #183a9b;
+}
+.chip.DONE {
+  background: rgba(34, 197, 94, 0.18);
+  color: #0f5132;
+}
+
+.dlg-actions {
+  padding: 8px 16px 16px;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+}
+.dlg-actions .spacer {
+  flex: 1 1 auto;
+}

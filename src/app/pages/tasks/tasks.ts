@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDividerModule } from '@angular/material/divider';
+
 import { TaskService } from '../../shared/services/task.service';
 import { Task, TaskRequest } from '../../shared/interfaces/task.interface';
 import { StatusEnum } from '../../shared/enums/status.enum';
-import { FormsModule } from '@angular/forms';
-import { DialogComponent } from '../../shared/components/dialog/dialog';
+import { DetailsDialog } from '../../shared/components/details-dialog/details-dialog';
+import { EditDialog } from '../../shared/components/dialog/edit-dialog';
+import { AppHeader } from '../../shared/components/header/header';
 
 @Component({
   selector: 'app-tasks',
@@ -24,8 +30,11 @@ import { DialogComponent } from '../../shared/components/dialog/dialog';
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatMenuModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatDividerModule,
+    AppHeader,
   ],
   templateUrl: './tasks.html',
   styleUrls: ['./tasks.scss'],
@@ -36,6 +45,12 @@ export class Tasks implements OnInit {
   statusFilter: 'ALL' | StatusEnum = 'ALL';
   sortOrder: 'ASC' | 'DESC' = 'ASC';
   statusEnum = StatusEnum;
+
+  private statusText: Record<StatusEnum, string> = {
+    [StatusEnum.PENDING]: 'Pendente',
+    [StatusEnum.IN_PROGRESS]: 'Em andamento',
+    [StatusEnum.DONE]: 'Concluída',
+  };
 
   constructor(
     private taskService: TaskService,
@@ -73,17 +88,49 @@ export class Tasks implements OnInit {
     this.filteredTasks = result;
   }
 
-  toggleStatus(task: Task) {
-    if (task.status === StatusEnum.PENDING) {
-      this.taskService.updateStatus(task.id, { status: StatusEnum.DONE }).subscribe({
-        next: () => {
-          this.snackBar.open('Tarefa concluída!', 'Fechar', { duration: 3000 });
-          this.loadTasks();
-        },
-      });
-    } else if (task.status === StatusEnum.DONE) {
-      this.deleteTask(task);
-    }
+  openDetails(task: Task) {
+    const ref = this.dialog.open(DetailsDialog, {
+      width: '520px',
+      data: task,
+    });
+
+    ref.afterClosed().subscribe((res) => {
+      if (!res) return;
+      if (res.action === 'edit') this.openEdit(task);
+      if (res.action === 'delete') this.deleteTask(task);
+      if (res.action === 'status') this.setStatus(task, res.status as StatusEnum);
+    });
+  }
+
+  openEdit(task?: Task) {
+    const ref = this.dialog.open(EditDialog, {
+      width: '420px',
+      data: task ? { ...task } : null,
+    });
+
+    ref.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      if (result.action === 'create') {
+        this.taskService.create(result.task as TaskRequest).subscribe(() => this.loadTasks());
+      }
+      if (result.action === 'update') {
+        this.taskService.update(result.task.id, result.task).subscribe(() => this.loadTasks());
+      }
+    });
+  }
+
+  setStatus(task: Task, status: StatusEnum) {
+    this.taskService.updateStatus(task.id, { status }).subscribe({
+      next: () => {
+        this.snackBar.open(`Tarefa marcada como ${this.statusText[status]}!`, 'Fechar', {
+          duration: 2500,
+        });
+        this.loadTasks();
+      },
+      error: () =>
+        this.snackBar.open('Não foi possível alterar o status.', 'Fechar', { duration: 3000 }),
+    });
   }
 
   deleteTask(task: Task) {
@@ -92,23 +139,6 @@ export class Tasks implements OnInit {
         this.snackBar.open('Tarefa excluída!', 'Fechar', { duration: 3000 });
         this.loadTasks();
       },
-    });
-  }
-
-  openTaskDialog(task?: Task) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: task ? { ...task } : null,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'create') {
-        this.taskService.create(result.task as TaskRequest).subscribe(() => this.loadTasks());
-      } else if (result?.action === 'update') {
-        this.taskService.update(result.task.id, result.task).subscribe(() => this.loadTasks());
-      } else if (result?.action === 'delete') {
-        this.taskService.delete(result.task.id).subscribe(() => this.loadTasks());
-      }
     });
   }
 }

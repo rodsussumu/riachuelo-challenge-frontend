@@ -7,10 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,7 +33,8 @@ export class Register {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {
     this.form = this.fb.group({
       username: ['', Validators.required],
@@ -40,20 +43,23 @@ export class Register {
   }
 
   submit() {
-    if (this.form.invalid) return;
-
+    if (this.form.invalid || this.loading) return;
     this.loading = true;
 
     this.authService.register(this.form.value).subscribe({
-      next: (res) => {
+      next: () => {
         this.snackBar.open('Cadastro realizado com sucesso!', 'Fechar', { duration: 3000 });
-        console.log('Usuário cadastrado:', res);
         this.loading = false;
+        this.router.navigateByUrl('/login');
       },
       error: () => {
         this.snackBar.open('Erro ao cadastrar usuário', 'Fechar', { duration: 3000 });
         this.loading = false;
       },
     });
+  }
+
+  goToLogin() {
+    this.router.navigateByUrl('/login');
   }
 }
