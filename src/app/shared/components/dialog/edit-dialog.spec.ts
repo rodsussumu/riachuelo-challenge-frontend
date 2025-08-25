@@ -3,6 +3,7 @@ import { EditDialog } from './edit-dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatusEnum } from '../../enums/status.enum';
+import { Task } from '../../interfaces/task.interface';
 
 describe('EditDialog', () => {
   let component: EditDialog;
@@ -31,11 +32,13 @@ describe('EditDialog', () => {
     });
 
     it('should initialize form with no data', () => {
+      expect(component.form.value.title).toBe('');
       expect(component.form.value.description).toBe('');
       expect(component.form.value.dueDate).toBeNull();
     });
 
     it('get f() should return form controls', () => {
+      expect(component.f.title).toBeTruthy();
       expect(component.f.description).toBeTruthy();
       expect(component.f.dueDate).toBeTruthy();
     });
@@ -56,6 +59,7 @@ describe('EditDialog', () => {
     });
 
     it('save() should not close dialog if form is invalid', () => {
+      component.form.controls['title'].setValue('');
       component.form.controls['description'].setValue('');
       component.form.controls['dueDate'].setValue(null);
       component.save();
@@ -63,6 +67,7 @@ describe('EditDialog', () => {
     });
 
     it('save() should close dialog with "create"', () => {
+      component.form.controls['title'].setValue('Task title');
       component.form.controls['description'].setValue('Task ok');
       component.form.controls['dueDate'].setValue(new Date());
       component.save();
@@ -78,7 +83,8 @@ describe('EditDialog', () => {
     it('delete() should close dialog with action delete', () => {
       component.data = {
         id: 1,
-        description: 'Delete me',
+        title: 'Delete me',
+        description: 'to remove',
         createdAt: new Date(),
         dueDate: new Date(),
         status: StatusEnum.IN_PROGRESS,
@@ -97,9 +103,17 @@ describe('EditDialog', () => {
   });
 
   describe('with data (update mode)', () => {
+    const testData: Task = {
+      id: 1,
+      title: 'Existing title',
+      description: 'Existing task',
+      createdAt: new Date(),
+      dueDate: new Date(),
+      status: StatusEnum.PENDING,
+    };
+
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-      const testData = { id: 1, description: 'Existing task', dueDate: new Date() };
 
       await TestBed.configureTestingModule({
         imports: [ReactiveFormsModule, EditDialog],
@@ -115,11 +129,13 @@ describe('EditDialog', () => {
     });
 
     it('should patch form when data is provided', () => {
+      expect(component.form.value.title).toBe('Existing title');
       expect(component.form.value.description).toBe('Existing task');
     });
 
     it('save() should close dialog with "update"', () => {
-      component.form.controls['description'].setValue('Updated');
+      component.form.controls['title'].setValue('Updated title');
+      component.form.controls['description'].setValue('Updated desc');
       component.form.controls['dueDate'].setValue(new Date());
       component.save();
 

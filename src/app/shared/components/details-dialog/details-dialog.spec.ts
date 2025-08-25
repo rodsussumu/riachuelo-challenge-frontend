@@ -11,6 +11,7 @@ describe('DetailsDialog', () => {
 
   const mockTask: Task = {
     id: 1,
+    title: 'Task Title',
     description: 'Test Task',
     createdAt: new Date(),
     dueDate: new Date(),

@@ -12,12 +12,22 @@
 <mat-dialog-content class="dlg-content">
   <form [formGroup]="form" class="form" (ngSubmit)="save()">
     <mat-form-field appearance="outline" class="full">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="title" autocomplete="off" maxlength="100" />
+      <mat-hint align="end">{{ f.title.value.length || 0 }}/100</mat-hint>
+      @if(f.title.hasError('required')) {
+      <mat-error>Título é obrigatório</mat-error>
+      } @if(f.title.hasError('minlength')) {
+      <mat-error>Mínimo de 3 caracteres</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
       <mat-label>Descrição</mat-label>
       <input matInput formControlName="description" autocomplete="off" maxlength="255" />
       <mat-hint align="end">{{ f.description.value.length || 0 }}/255</mat-hint>
       @if(f.description.hasError('required')) {
       <mat-error>Descrição é obrigatória</mat-error>
-
       } @if(f.description.hasError('minlength')) {
       <mat-error>Mínimo de 3 caracteres</mat-error>
       }
@@ -35,10 +45,8 @@
       <mat-hint align="start">Formato: dd/MM/aaaa</mat-hint>
       @if(f['dueDate'].hasError('required')) {
       <mat-error>Informe a data de vencimento</mat-error>
-
       } @if(f['dueDate'].hasError('minDate')) {
       <mat-error>Use hoje ou uma data futura</mat-error>
-
       }
     </mat-form-field>
   </form>

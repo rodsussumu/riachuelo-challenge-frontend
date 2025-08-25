@@ -30,7 +30,7 @@ describe('TaskService', () => {
 
   describe('create', () => {
     it('should POST a new task', () => {
-      const mockTask: TaskRequest = { description: 'New task', dueDate: new Date() };
+      const mockTask: TaskRequest = { title: 'teste', description: 'New task', dueDate: new Date() };
       const mockResponse: Task = { id: 1, ...mockTask, status: 'PENDING' } as any;
 
       service.create(mockTask).subscribe((res) => {
@@ -100,7 +100,7 @@ describe('TaskService', () => {
 
   describe('update', () => {
     it('should PUT an updated task', () => {
-      const mockTask: TaskRequest = { description: 'Updated', dueDate: new Date() };
+      const mockTask: TaskRequest = { title: 'teste', description: 'Updated', dueDate: new Date() };
       const mockResponse: Task = { id: 5, ...mockTask, status: 'PENDING' } as any;
 
       service.update(5, mockTask).subscribe((res) => {

@@ -18,6 +18,7 @@ describe('Tasks Page', () => {
 
   const mockTask: Task = {
     id: 1,
+    title: 'My Task',
     description: 'Desc',
     status: StatusEnum.PENDING,
     createdAt: new Date(2024, 0, 1),
@@ -223,6 +224,7 @@ describe('Tasks Page', () => {
   it('applyFilters should filter tasks when statusFilter is not "ALL"', () => {
     const t1: Task = {
       id: 1,
+      title: 'Task A',
       description: 'A',
       status: StatusEnum.PENDING,
       createdAt: new Date(2024, 0, 1),
@@ -230,6 +232,7 @@ describe('Tasks Page', () => {
     };
     const t2: Task = {
       id: 2,
+      title: 'Task B',
       description: 'B',
       status: StatusEnum.DONE,
       createdAt: new Date(2024, 0, 1),
@@ -237,6 +240,7 @@ describe('Tasks Page', () => {
     };
     const t3: Task = {
       id: 3,
+      title: 'Task C',
       description: 'C',
       status: StatusEnum.IN_PROGRESS,
       createdAt: new Date(2024, 0, 1),
@@ -256,6 +260,7 @@ describe('Tasks Page', () => {
   it('applyFilters should sort by dueDate ASC when sortOrder is "ASC"', () => {
     const early: Task = {
       id: 10,
+      title: 'Early',
       description: 'early',
       status: StatusEnum.PENDING,
       createdAt: new Date(2024, 0, 1),
@@ -263,6 +268,7 @@ describe('Tasks Page', () => {
     };
     const late: Task = {
       id: 11,
+      title: 'Late',
       description: 'late',
       status: StatusEnum.PENDING,
       createdAt: new Date(2024, 0, 1),
@@ -280,6 +286,7 @@ describe('Tasks Page', () => {
   it('applyFilters should sort by dueDate DESC when sortOrder is "DESC"', () => {
     const early: Task = {
       id: 20,
+      title: 'Early',
       description: 'early',
       status: StatusEnum.PENDING,
       createdAt: new Date(2024, 0, 1),
@@ -287,6 +294,7 @@ describe('Tasks Page', () => {
     };
     const late: Task = {
       id: 21,
+      title: 'Late',
       description: 'late',
       status: StatusEnum.PENDING,
       createdAt: new Date(2024, 0, 1),

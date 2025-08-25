@@ -27,6 +27,7 @@ import { Task } from '../../interfaces/task.interface';
 import { StatusEnum } from '../../enums/status.enum';
 
 type TaskForm = {
+  title: FormControl<string>;
   description: FormControl<string>;
   dueDate: FormControl<Date | null>;
 };
@@ -69,6 +70,10 @@ export class EditDialog {
     const initialDate = data?.dueDate ? new Date(data.dueDate) : null;
 
     this.form = new FormGroup<TaskForm>({
+      title: new FormControl<string>(data?.title || '', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)],
+      }),
       description: new FormControl<string>('', {
         nonNullable: true,
         validators: [Validators.required, Validators.minLength(3), Validators.maxLength(255)],
