@@ -1,16 +1,17 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpRequest } from '@angular/common/http';
+import { authInterceptor } from './auth.interceptor';
 
-import { AuthInterceptor } from './auth.interceptor';
+describe('authInterceptor', () => {
+  it('deve adicionar withCredentials=true em todas as requests', () => {
+    const req = new HttpRequest('GET', '/test');
+    const next = jasmine.createSpy().and.callFake((newReq: HttpRequest<any>) => {
+      expect(newReq.withCredentials).toBeTrue();
+      return 'mockResponse' as any;
+    });
 
-describe('AuthInterceptor', () => {
-  let service: AuthInterceptor;
+    const result = authInterceptor(req, next);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthInterceptor);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(next).toHaveBeenCalled();
+    expect(result).toBe('mockResponse' as any);
   });
 });
