@@ -54,7 +54,6 @@ describe('Tasks Page', () => {
     snackBarSvc = TestBed.inject(MatSnackBar);
     dialogSvc = TestBed.inject(MatDialog);
 
-    // default to keep ngOnInit safe whenever detectChanges is called
     taskService.list.and.returnValue(of([]));
   });
 
@@ -62,14 +61,11 @@ describe('Tasks Page', () => {
     expect(component).toBeTruthy();
   });
 
-  // ✅ covers ngOnInit -> this.loadTasks()
   it('should call loadTasks on init', () => {
     const loadSpy = spyOn(component, 'loadTasks');
-    fixture.detectChanges(); // triggers ngOnInit
+    fixture.detectChanges();
     expect(loadSpy).toHaveBeenCalledTimes(1);
   });
-
-  // ---------------- loadTasks ----------------
 
   it('loadTasks should show error snackbar on failure', fakeAsync(() => {
     taskService.list.and.returnValue(throwError(() => new Error('boom')));
@@ -85,12 +81,10 @@ describe('Tasks Page', () => {
     );
   }));
 
-  // ---------------- setStatus ----------------
-
   it('setStatus should update and notify success', fakeAsync(() => {
     const updatedTask: Task = { ...mockTask, status: StatusEnum.DONE };
     taskService.updateStatus.and.returnValue(of(updatedTask));
-    taskService.list.and.returnValue(of([updatedTask])); // reload after success
+    taskService.list.and.returnValue(of([updatedTask]));
     const sbSpy = spyOn((component as any).snackBar, 'open');
 
     component.setStatus(mockTask, StatusEnum.DONE);
@@ -118,11 +112,9 @@ describe('Tasks Page', () => {
     );
   }));
 
-  // ---------------- deleteTask ----------------
-
   it('deleteTask should delete and reload with success snackbar', fakeAsync(() => {
     taskService.delete.and.returnValue(of(void 0));
-    taskService.list.and.returnValue(of([])); // reload after success
+    taskService.list.and.returnValue(of([]));
     const sbSpy = spyOn((component as any).snackBar, 'open');
 
     component.deleteTask(mockTask);
@@ -136,11 +128,9 @@ describe('Tasks Page', () => {
     );
   }));
 
-  // ---------------- openEdit (create / update / null) ----------------
-
   it('openEdit should call taskService.create when action is "create"', fakeAsync(() => {
     taskService.create.and.returnValue(of(mockTask));
-    taskService.list.and.returnValue(of([mockTask])); // reload
+    taskService.list.and.returnValue(of([mockTask]));
     const dialogRefMock = { afterClosed: () => of({ action: 'create', task: mockTask }) } as any;
 
     spyOn((component as any).dialog, 'open').and.returnValue(dialogRefMock);
@@ -153,7 +143,7 @@ describe('Tasks Page', () => {
 
   it('openEdit should call taskService.update when action is "update"', fakeAsync(() => {
     taskService.update.and.returnValue(of(mockTask));
-    taskService.list.and.returnValue(of([mockTask])); // reload
+    taskService.list.and.returnValue(of([mockTask]));
     const dialogRefMock = { afterClosed: () => of({ action: 'update', task: mockTask }) } as any;
 
     spyOn((component as any).dialog, 'open').and.returnValue(dialogRefMock);
@@ -178,8 +168,6 @@ describe('Tasks Page', () => {
     expect(createSpy).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();
   }));
-
-  // ---------------- openDetails (edit / delete / status / null) --------------
 
   it('openDetails should call openEdit when action is "edit"', fakeAsync(() => {
     const dialogRefMock = { afterClosed: () => of({ action: 'edit' }) } as any;
@@ -232,8 +220,6 @@ describe('Tasks Page', () => {
     expect(statusSpy).not.toHaveBeenCalled();
   }));
 
-  // ---------------- applyFilters coverage (filter + ASC/DESC) ----------------
-
   it('applyFilters should filter tasks when statusFilter is not "ALL"', () => {
     const t1: Task = {
       id: 1,
@@ -258,7 +244,7 @@ describe('Tasks Page', () => {
     };
 
     component.tasks = [t1, t2, t3];
-    component.statusFilter = StatusEnum.DONE; // enter the if branch
+    component.statusFilter = StatusEnum.DONE;
     component.sortOrder = 'ASC';
     component.applyFilters();
 
@@ -283,7 +269,7 @@ describe('Tasks Page', () => {
       dueDate: new Date(2024, 0, 5),
     };
 
-    component.tasks = [late, early]; // unsorted
+    component.tasks = [late, early];
     component.statusFilter = 'ALL';
     component.sortOrder = 'ASC';
     component.applyFilters();
@@ -307,7 +293,7 @@ describe('Tasks Page', () => {
       dueDate: new Date(2024, 0, 5),
     };
 
-    component.tasks = [early, late]; // unsorted
+    component.tasks = [early, late];
     component.statusFilter = 'ALL';
     component.sortOrder = 'DESC';
     component.applyFilters();

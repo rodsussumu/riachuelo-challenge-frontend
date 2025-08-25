@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService, UserRequest, UserLoginResponse, UserRegisterResponse } from './auth.service';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('AuthService', () => {

@@ -35,7 +35,6 @@ describe('Login Page', () => {
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
 
-    // Spy the exact MatSnackBar instance used by the component
     snackBarOpenSpy = spyOn((component as any).snackBar as MatSnackBar, 'open');
 
     fixture.detectChanges();
@@ -119,7 +118,7 @@ describe('Login Page', () => {
     tick();
 
     expect(authService.login).toHaveBeenCalledWith({ username: 'jane', password: '123' });
-    expect(authService.setUsername).toHaveBeenCalledWith('jane'); // <- cobre o fallback
+    expect(authService.setUsername).toHaveBeenCalledWith('jane');
     expect(snackBarOpenSpy).toHaveBeenCalledWith(
       'Login realizado com sucesso!',
       'Fechar',

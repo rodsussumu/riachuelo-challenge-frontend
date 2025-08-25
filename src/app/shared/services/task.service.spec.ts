@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { TaskService } from './task.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import { Task, TaskRequest, StatusUpdateRequest } from '../interfaces/task.interface';
 import { StatusEnum } from '../enums/status.enum';
 

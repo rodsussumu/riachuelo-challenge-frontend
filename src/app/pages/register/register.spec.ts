@@ -1,4 +1,3 @@
-// src/app/pages/register/register.spec.ts
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Register } from './register';
 import { AuthService } from '../../shared/services/auth.service';
@@ -36,7 +35,6 @@ describe('Register Page', () => {
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
 
-    // Espiona a exata instância de MatSnackBar usada pelo componente
     snackBarOpenSpy = spyOn((component as any).snackBar as MatSnackBar, 'open');
 
     fixture.detectChanges();
@@ -51,7 +49,6 @@ describe('Register Page', () => {
   });
 
   it('submit should early return when form is invalid', fakeAsync(() => {
-    // Não preenche o form => inválido
     component.submit();
     tick();
 
@@ -73,7 +70,6 @@ describe('Register Page', () => {
   it('submit should register and navigate on success', fakeAsync(() => {
     component.form.setValue({ username: 'john', password: 'secret' });
 
-    // Mocka a resposta do backend (ajuste o shape se tiver interface exata)
     const mockRegisterResponse = { ok: true } as any;
     authService.register.and.returnValue(of(mockRegisterResponse));
 
