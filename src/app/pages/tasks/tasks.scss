@@ -4,7 +4,6 @@
   padding: 16px;
 }
 
-/* Filtros + botão */
 .filters {
   display: flex;
   gap: 12px;
@@ -20,7 +19,6 @@
   margin: 0;
 }
 
-/* remove área do subscript que dá “salto” nos selects */
 :host ::ng-deep .filters .mat-mdc-form-field-subscript-wrapper {
   display: none;
   height: 0;
@@ -28,7 +26,6 @@
   margin: 0;
 }
 
-/* altura e posição do botão */
 .new-btn {
   align-self: flex-end;
   height: 56px;
@@ -37,7 +34,6 @@
   border-radius: 999px;
 }
 
-/* quebra no mobile: botão abaixo ocupando toda a linha */
 @media (max-width: 860px) {
   .filters {
     align-items: stretch;
@@ -52,7 +48,6 @@
   }
 }
 
-/* grade das tasks */
 .tasks {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -87,7 +82,6 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* cores por status */
 .task-card.PENDING {
   background-color: rgba(245, 158, 11, 0.12) !important;
   border-left: 6px solid #f59e0b;
